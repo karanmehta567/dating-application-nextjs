@@ -13,7 +13,7 @@ interface ChatData{
 export default function ChatPage(){
     const [chats,setChats]=useState<ChatData[]>([]);
     const [loading,setLoading]=useState<boolean>(true)
-     useEffect(()=>{
+    useEffect(()=>{
             async function loadUsers(){
                 try {
                     const userMtaches=await getUsersMatches();
@@ -25,7 +25,6 @@ export default function ChatPage(){
                         unreadCount:0
                     }))
                     setChats(chatData)
-                    console.log(userMtaches)
                 } catch (error) {
                     console.log(error)
                 }finally{

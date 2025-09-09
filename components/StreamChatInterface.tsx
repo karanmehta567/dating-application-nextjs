@@ -311,7 +311,7 @@ export default function StreamChatInterface({ otherUser, ref }: StreamChatInterf
                 onChange={(e)=>{
                     setnewMessage(e.target.value)
                     if(channel&&e.target.value.length>0){
-                         channel.keystroke()
+                         channel.keystroke() 
                     }
                 }}
                 placeholder="Type a message"
