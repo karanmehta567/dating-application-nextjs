@@ -12,14 +12,14 @@
 
 # testing
 /coverage
-/scripts
 # next.js
 /.next/
 /out/
 
 # production
 /build
-
+# scripts
+scripts/
 # misc
 .DS_Store
 *.pem
