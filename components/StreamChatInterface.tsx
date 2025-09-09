@@ -98,6 +98,7 @@ export default function StreamChatInterface({ otherUser, ref }: StreamChatInterf
                 chatChannel.on('message.new',(event:Event)=>{
                     if(event.message){
                         if(event.message.text?.includes('You have been invited for a video call!📹')){
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const customData=event.message as any
                             if(customData.caller_id!==userId){
                                 setIncomingCall(customData.call_id)

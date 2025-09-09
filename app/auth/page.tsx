@@ -38,7 +38,8 @@ export default function AuthPage(){
                     throw error
                 }
             }
-        } catch (error:any) {
+        } 
+        catch (error:any) {
             setError(error.message)
         }
         finally {

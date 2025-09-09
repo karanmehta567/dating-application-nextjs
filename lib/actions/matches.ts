@@ -17,6 +17,7 @@ export async function getPotentialMatches():Promise<UserProfile[]>{
     if(prefError){
         throw new Error('Failed to fetch preferences of the user')
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const currentUserPrefs=prefData.preferences as any;
     const genderPrefs=currentUserPrefs?.gender_preference || []
     const fileteredMatches=potentialMatches.filter((match)=>{
