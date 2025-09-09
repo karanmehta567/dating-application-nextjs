@@ -33,7 +33,9 @@ export default function ChatConversationPage(){
                         setLOading(false)
                     }
                 }
-                loadUserData()
+                if (user) {
+                    loadUserData();
+                }
             },[userId,router,user])
         if (loading) {
         return (
@@ -58,7 +60,7 @@ if (!otherUser) {
                 User not found
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-                The user you are looking for doesn't exist or you don't have
+                The user you are looking for does not exist or you do not have
                 permission to chat with them.
             </p>
             <button

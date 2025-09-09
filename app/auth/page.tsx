@@ -16,7 +16,7 @@ export default function AuthPage(){
         if(user&&!authLoadingstage){
             router.push('/')
         }
-    },[user,loading,router])
+    },[user,loading,router,authLoadingstage])
     async function handleAuth(e:React.FormEvent){
         e.preventDefault()
 
@@ -39,8 +39,12 @@ export default function AuthPage(){
                 }
             }
         } 
-        catch (error:any) {
-            setError(error.message)
+        catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
         }
         finally {
             setLoading(false);
@@ -113,7 +117,7 @@ export default function AuthPage(){
                             >
                                 {isSignUp
                                 ? "Already have an account? Sign in"
-                                : "Don't have an account? Sign up"}
+                                : "Don&apos;t have an account? Sign up"}
                             </button>
                         </div>
                 </div>
