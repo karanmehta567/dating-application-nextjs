@@ -27,7 +27,7 @@ export default function EditProfile() {
                 full_name: profileData.full_name || "",
                 username: profileData.username || "",
                 bio: profileData.bio || "",
-                gender: profileData.gender || "male",
+                gender: profileData.gender=='male'||profileData.gender==='female'?profileData.gender:'male',
                 birthdate: profileData.birthdate || "",
                 avatar_url: profileData.avatar_url || "",
             });
@@ -57,7 +57,10 @@ export default function EditProfile() {
         setsaving(true);
         setError(null);
         try {
-        const details = await UpdateUserProfile(formdata);
+        const details = await UpdateUserProfile({
+            ...formdata,
+            gender:formdata.gender==='female'?'female':'male'
+        });
         if (details.success) {
             router.push("/profile");
         } else {

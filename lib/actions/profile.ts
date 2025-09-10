@@ -27,7 +27,7 @@ export async function UpdateUserProfile(formData:Partial<UserProfile>){
             full_name: formData.full_name,
             username: formData.username,
             bio: formData.bio,
-            gender: formData.gender,
+            gender: formData.gender?.toLowerCase(),
             birthdate: formData.birthdate,
             avatar_url: formData.avatar_url,
             updated_at:new Date().toISOString()

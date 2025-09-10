@@ -13,13 +13,22 @@ export async function getPotentialMatches():Promise<UserProfile[]>{
     if(error){
         throw new Error('Failed to fetched potential matches')
     }
-    const {data:prefData,error:prefError}=await supabase.from('users').select("preferences").eq('id',user.id).single()
+    const {data:prefData,error:prefError}=await supabase.from('users').select("preferences,gender").eq('id',user.id).single()
     if(prefError){
         throw new Error('Failed to fetch preferences of the user')
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const currentUserPrefs=prefData.preferences as any;
-    const genderPrefs=currentUserPrefs?.gender_preference || []
+    let genderPrefs=currentUserPrefs?.gender_preference || []
+    if (!genderPrefs.length) {
+        if (prefData.gender === "male") {
+            genderPrefs = ["female"];
+        } else if (prefData.gender === "female") {
+            genderPrefs = ["male"];
+        } else {
+            genderPrefs = []; // for "other" cases
+        }
+}
     const fileteredMatches=potentialMatches.filter((match)=>{
         if(!genderPrefs|| genderPrefs.length===0){
             return true;

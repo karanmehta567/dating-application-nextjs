@@ -14,7 +14,7 @@ export default function AuthPage(){
     const router=useRouter()
     useEffect(()=>{
         if(user&&!authLoadingstage){
-            router.push('/')
+            router.push('/profile')
         }
     },[user,loading,router,authLoadingstage])
     async function handleAuth(e:React.FormEvent){

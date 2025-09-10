@@ -86,7 +86,7 @@ export default function List(){
                     <div className="flex items-center space-x-4">
                         <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
                         <img
-                            src={match.avatar_url}
+                            src={match?.avatar_url && match.avatar_url.trim() !== "" ? match.avatar_url : "/user-image.jpg"}
                             alt={match.full_name}
                             className="w-full h-full object-cover"
                         />

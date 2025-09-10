@@ -8,7 +8,7 @@ export interface UserProfile{
   full_name: string;
   username: string;
   email: string;
-  gender: "male" | "female" | "other";
+  gender: "male" | "female";
   birthdate: string;
   bio: string;
   avatar_url: string;
@@ -27,7 +27,7 @@ export interface UserPreferences {
     max: number;
   };
   distance: number;
-  gender_preference: ("male" | "female" | "other")[];
+  gender_preference: ("male" | "female")[];
 }
 
 export default function ProfilePage(){

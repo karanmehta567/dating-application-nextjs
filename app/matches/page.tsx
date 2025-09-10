@@ -12,6 +12,8 @@ export default function MatchesPage(){
     const [loading,setLoading]=useState<boolean>(true);
     const [currentIndex,setCurrentIndex]=useState(0);
     const [showMatchedNotification,setShowMatchedNotification]=useState(false);
+    const [showLikedNotification,setShowLikedNotification]=useState(false)
+    const [likedUser,setLikedUser]=useState<UserProfile|null>(null)
     const [matchedUser,setShowMatchedUser]=useState<UserProfile|null>(null)
     const router=useRouter()
     useEffect(()=>{
@@ -32,13 +34,20 @@ export default function MatchesPage(){
         //check if within the count
         if(currentIndex<potentialMatches.length){
             const likedUser=potentialMatches[currentIndex]
+            
             try {
                 const result=await toLikes(likedUser.id)
+                  setLikedUser(likedUser)
+                  setShowLikedNotification(true)
                 if(result.isMatch){
                     setShowMatchedUser(result.matchedUser||null)
                     setShowMatchedNotification(true)
+                    setTimeout(()=>{
+                        setCurrentIndex((prev)=>prev+1)
+                      },3000)
+                }else {
+                  setCurrentIndex((prev) => prev + 1)
                 }
-                setCurrentIndex((prev)=>prev+1)
             } catch (error) {
                 console.log(error)
             }
@@ -50,16 +59,19 @@ export default function MatchesPage(){
         }
     }
     function handleCloseMatchNotifi(){
-
+      setShowMatchedNotification(false)
+      setShowMatchedUser(null)
     }
-    function handleStartChat(){
-         
+      function handleStartChat(){
+          if(matchedUser){
+            router.push(`/chat/${matchedUser.id}`)
+          }
     }
     const currentMatchIndex=potentialMatches[currentIndex]
     // if(!currentMatchIndex){
     //     return;
     // }
-     if (loading) {
+    if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
@@ -103,52 +115,64 @@ export default function MatchesPage(){
   }
     return (
         <div className="h-full overflow-y-auto bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800">
-            <div className="container mx-auto px-4 py-8">
-                <header className="mb-8">
-                <div className="flex items-center justify-between mb-4">
+          <div className="container mx-auto px-4 py-8">
+            <header className="mb-8">
+              <div className="flex items-center justify-between mb-4">
                 <button
-                onClick={() => router.back()}
-                className="p-2 rounded-full hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors duration-200"
-                title="Go back"
+                  onClick={() => router.back()}
+                  className="p-2 rounded-full hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                  title="Go back"
                 >
-                <svg
+                  <svg
                     className="w-6 h-6 text-gray-700 dark:text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                >
+                  >
                     <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
                     />
-                </svg>
+                  </svg>
                 </button>
                 <div className="flex-1">
-                <div className="text-center">
+                  <div className="text-center">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    Discover Matches
+                      Discover Matches
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400">
-                    {currentIndex + 1} of {potentialMatches.length} profiles
+                      {currentIndex + 1} of {potentialMatches.length} profiles
                     </p>
+                  </div>
                 </div>
-                </div>
-                </div>
-                </header>
-                <div className="max-w-md mx-auto">
-                    <MatchCard user={currentMatchIndex}/>
-                    <div className="mt-8">
-                        <MatchButtons onLike={handleLike} onPass={handlePass}/>
-                    </div>
-                </div>
-                {
-                    showMatchedNotification&&matchedUser&&(
-                        <HandleMatchNotification match={matchedUser} onClose={handleCloseMatchNotifi} onStartChat={handleStartChat}/>
-                    )
-                }
+              </div>
+            </header>
+
+            <div className="max-w-md mx-auto">
+              <MatchCard user={currentMatchIndex} />
+              <div className="mt-8">
+                <MatchButtons onLike={handleLike} onPass={handlePass} />
+              </div>
             </div>
+          </div>
+
+          {/* ✅ Like notification (floating, independent of card render) */}
+          {showLikedNotification && likedUser && (
+            <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-6 py-3 rounded-full shadow-lg text-center animate-bounce">
+              ❤️ You liked {likedUser.username}
+            </div>
+          )}
+
+          {/* ✅ Match notification (floating, independent of card render) */}
+          {showMatchedNotification && matchedUser && (
+            <HandleMatchNotification
+              match={matchedUser}
+              onClose={handleCloseMatchNotifi}
+              onStartChat={handleStartChat}
+            />
+          )}
         </div>
     )
 }

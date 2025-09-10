@@ -42,7 +42,7 @@ export default function ChatHeader({user,onVideoCall}:ChatHeaderProps){
             <div className="flex items-center space-x-3">
             <div className="relative w-12 h-12 rounded-full overflow-hidden">
                 <img
-                    src={user.avatar_url}
+                    src={user?.avatar_url && user.avatar_url.trim() !== "" ? user.avatar_url : "/user-image.jpg"}
                     alt={user.full_name}
                     className="w-full h-full object-cover"
                 />
